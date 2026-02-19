@@ -1,4 +1,4 @@
-# 🚀 Cloud AI Portfolio Website - Sanwal Farooq
+# 🚀Portfolio Website - Sanwal Farooq
 
 A modern, futuristic portfolio website featuring dark theme, glassmorphism effects, 3D rotating cards, and animated particles. Built with pure HTML, CSS, and JavaScript - no frameworks required.
 
