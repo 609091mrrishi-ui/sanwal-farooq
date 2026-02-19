@@ -73,9 +73,7 @@ portfolio/
 ├── style.css          # All styling and animations
 ├── script.js          # Interactive features
 ├── README.md          # This file
-└── assets/            # Create this folder for images
-    └── images/
-        └── profile.jpg  # Your profile photo
+└── porfitolio.jpg # Your profile photo
 ```
 
 ## 🎨 Customization Guide
