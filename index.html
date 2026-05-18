@@ -7,28 +7,447 @@
     <meta name="keywords" content="Cloud AI, Financial Mathematics, Aviation Analytics, Risk Management, Portfolio Optimization, AI Systems">
     <meta name="author" content="Sanwal Farooq">
     
-    <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Sanwal Farooq | Cloud AI & Financial Mathematics Specialist">
     <meta property="og:description" content="Optimizing Aviation & Financial Systems with AI-Driven Intelligence">
     <meta property="og:type" content="website">
     
     <title>Sanwal Farooq | Cloud AI & Financial Mathematics Specialist</title>
     
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome for Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <link rel="stylesheet" href="style.css">
+
+    <!-- ===== NEW PROJECTS SECTION STYLES ===== -->
+    <style>
+      /* Override old projects section */
+      #projects.projects-section {
+        padding: 100px 20px !important;
+        background: #030712 !important;
+        position: relative !important;
+        overflow: hidden !important;
+      }
+
+      #projects .container { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+
+      /* Animated grid background */
+      .proj-grid-bg {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+        background-size: 60px 60px;
+        animation: projGridMove 20s linear infinite;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      @keyframes projGridMove {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(60px); }
+      }
+
+      #projects .section-header { text-align: center; margin-bottom: 50px; }
+
+      .proj-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(0,212,255,0.1);
+        border: 1px solid rgba(0,212,255,0.3);
+        border-radius: 30px;
+        padding: 6px 20px;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        color: #00d4ff;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+      }
+
+      .proj-tag::before {
+        content: '';
+        width: 8px; height: 8px;
+        border-radius: 50%;
+        background: #00d4ff;
+        animation: projPulse 2s infinite;
+      }
+
+      @keyframes projPulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.5; transform: scale(0.8); }
+      }
+
+      /* Stats row */
+      .proj-stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+        margin-bottom: 40px;
+        padding: 28px 30px;
+        background: rgba(255,255,255,0.02);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 20px;
+      }
+
+      .proj-stat-item { display: flex; flex-direction: column; gap: 4px; }
+
+      .proj-stat-num {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, #00d4ff, #7c3aed);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .proj-stat-label {
+        font-size: 12px;
+        color: #8b949e;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+
+      /* Filter tabs */
+      .proj-filter-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 40px;
+      }
+
+      .proj-filter-btn {
+        padding: 8px 20px;
+        border-radius: 25px;
+        border: 1px solid rgba(0,212,255,0.2);
+        background: transparent;
+        color: #8b949e;
+        font-family: 'Exo 2', sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        letter-spacing: 1px;
+      }
+
+      .proj-filter-btn:hover, .proj-filter-btn.active {
+        background: rgba(0,212,255,0.15);
+        border-color: #00d4ff;
+        color: #00d4ff;
+        box-shadow: 0 0 20px rgba(0,212,255,0.4);
+      }
+
+      /* Projects grid */
+      .proj-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 30px;
+        perspective: 1200px;
+      }
+
+      /* 3D flip card */
+      .proj-card {
+        height: 420px;
+        perspective: 1200px;
+        cursor: pointer;
+        opacity: 0;
+        transform: translateY(40px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
+
+      .proj-card.visible { opacity: 1; transform: translateY(0); }
+
+      .proj-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .proj-card:hover .proj-card-inner { transform: rotateY(180deg); }
+
+      .proj-card-front, .proj-card-back {
+        position: absolute;
+        inset: 0;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        border-radius: 20px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.08);
+      }
+
+      /* Front */
+      .proj-card-front {
+        background: #0d1117;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .proj-front-header {
+        padding: 28px 28px 20px;
+        position: relative;
+        flex: 1;
+      }
+
+      .proj-card-num {
+        position: absolute;
+        top: 20px; right: 24px;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 11px;
+        color: rgba(255,255,255,0.2);
+        letter-spacing: 2px;
+      }
+
+      .proj-icon-wrap {
+        width: 64px; height: 64px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        margin-bottom: 20px;
+      }
+
+      .proj-cat-badge {
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        padding: 4px 12px;
+        border-radius: 20px;
+        margin-bottom: 14px;
+      }
+
+      .proj-card-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 1.4;
+        color: #fff;
+        margin-bottom: 12px;
+      }
+
+      .proj-card-desc {
+        font-size: 0.88rem;
+        color: #8b949e;
+        line-height: 1.6;
+        font-family: 'Exo 2', sans-serif;
+      }
+
+      .proj-front-footer {
+        padding: 16px 28px 22px;
+        border-top: 1px solid rgba(255,255,255,0.06);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .proj-tag-pill {
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        background: rgba(255,255,255,0.06);
+        color: #8b949e;
+        border: 1px solid rgba(255,255,255,0.08);
+        font-family: 'Exo 2', sans-serif;
+      }
+
+      .proj-flip-hint {
+        position: absolute;
+        bottom: 22px; right: 24px;
+        font-size: 11px;
+        color: rgba(255,255,255,0.25);
+        letter-spacing: 1px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-family: 'Exo 2', sans-serif;
+      }
+
+      .proj-flip-hint svg {
+        width: 14px; height: 14px;
+        animation: flipHintAnim 3s infinite;
+      }
+
+      @keyframes flipHintAnim {
+        0%, 70% { transform: rotateY(0deg); }
+        85% { transform: rotateY(180deg); }
+        100% { transform: rotateY(0deg); }
+      }
+
+      /* Back */
+      .proj-card-back {
+        background: #161b22;
+        transform: rotateY(180deg);
+        display: flex;
+        flex-direction: column;
+        padding: 28px;
+      }
+
+      .proj-back-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 20px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+      }
+
+      .proj-back-icon {
+        width: 44px; height: 44px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        flex-shrink: 0;
+      }
+
+      .proj-back-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1.3;
+      }
+
+      .proj-back-sections { flex: 1; overflow: hidden; }
+      .proj-back-section { margin-bottom: 14px; }
+
+      .proj-back-label {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+        font-family: 'Exo 2', sans-serif;
+      }
+
+      .proj-back-text {
+        font-size: 0.82rem;
+        color: #8b949e;
+        line-height: 1.55;
+        font-family: 'Exo 2', sans-serif;
+      }
+
+      .proj-impact-stat {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 14px;
+        border-radius: 10px;
+        background: rgba(0,212,255,0.05);
+        border: 1px solid rgba(0,212,255,0.1);
+        margin-top: 6px;
+        font-size: 0.8rem;
+        color: #00d4ff;
+        font-weight: 600;
+        font-family: 'Exo 2', sans-serif;
+      }
+
+      .proj-linkedin-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 20px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, rgba(0,119,181,0.3), rgba(0,119,181,0.1));
+        border: 1px solid rgba(0,119,181,0.4);
+        color: #5cb8e4;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-top: 16px;
+        transition: all 0.3s ease;
+        font-family: 'Exo 2', sans-serif;
+      }
+
+      .proj-linkedin-btn:hover {
+        background: rgba(0,119,181,0.4);
+        border-color: rgba(0,119,181,0.7);
+        box-shadow: 0 0 15px rgba(0,119,181,0.3);
+        transform: translateY(-1px);
+      }
+
+      /* ===== COLOR THEMES ===== */
+      .pc-cyan .proj-icon-wrap { background: rgba(0,212,255,0.12); border: 1px solid rgba(0,212,255,0.2); }
+      .pc-cyan .proj-cat-badge { background: rgba(0,212,255,0.1); color: #00d4ff; border: 1px solid rgba(0,212,255,0.2); }
+      .pc-cyan .proj-back-icon { background: rgba(0,212,255,0.12); border: 1px solid rgba(0,212,255,0.2); }
+      .pc-cyan .proj-impact-stat { border-color: rgba(0,212,255,0.2); color: #00d4ff; }
+
+      .pc-orange .proj-icon-wrap { background: rgba(255,107,53,0.12); border: 1px solid rgba(255,107,53,0.2); }
+      .pc-orange .proj-cat-badge { background: rgba(255,107,53,0.1); color: #ff6b35; border: 1px solid rgba(255,107,53,0.2); }
+      .pc-orange .proj-back-icon { background: rgba(255,107,53,0.12); border: 1px solid rgba(255,107,53,0.2); }
+      .pc-orange .proj-impact-stat { border-color: rgba(255,107,53,0.2); color: #ff6b35; background: rgba(255,107,53,0.05); }
+
+      .pc-purple .proj-icon-wrap { background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.2); }
+      .pc-purple .proj-cat-badge { background: rgba(124,58,237,0.1); color: #a78bfa; border: 1px solid rgba(124,58,237,0.2); }
+      .pc-purple .proj-back-icon { background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.2); }
+      .pc-purple .proj-impact-stat { border-color: rgba(124,58,237,0.2); color: #a78bfa; background: rgba(124,58,237,0.05); }
+
+      .pc-green .proj-icon-wrap { background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.2); }
+      .pc-green .proj-cat-badge { background: rgba(16,185,129,0.1); color: #34d399; border: 1px solid rgba(16,185,129,0.2); }
+      .pc-green .proj-back-icon { background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.2); }
+      .pc-green .proj-impact-stat { border-color: rgba(16,185,129,0.2); color: #34d399; background: rgba(16,185,129,0.05); }
+
+      .pc-pink .proj-icon-wrap { background: rgba(236,72,153,0.12); border: 1px solid rgba(236,72,153,0.2); }
+      .pc-pink .proj-cat-badge { background: rgba(236,72,153,0.1); color: #f472b6; border: 1px solid rgba(236,72,153,0.2); }
+      .pc-pink .proj-back-icon { background: rgba(236,72,153,0.12); border: 1px solid rgba(236,72,153,0.2); }
+      .pc-pink .proj-impact-stat { border-color: rgba(236,72,153,0.2); color: #f472b6; background: rgba(236,72,153,0.05); }
+
+      .pc-yellow .proj-icon-wrap { background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.2); }
+      .pc-yellow .proj-cat-badge { background: rgba(245,158,11,0.1); color: #fbbf24; border: 1px solid rgba(245,158,11,0.2); }
+      .pc-yellow .proj-back-icon { background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.2); }
+      .pc-yellow .proj-impact-stat { border-color: rgba(245,158,11,0.2); color: #fbbf24; background: rgba(245,158,11,0.05); }
+
+      /* Top accent border */
+      .proj-card .proj-card-front::before,
+      .proj-card .proj-card-back::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        border-radius: 20px 20px 0 0;
+      }
+
+      .pc-cyan .proj-card-front::before, .pc-cyan .proj-card-back::before { background: linear-gradient(90deg, #00d4ff, transparent); }
+      .pc-orange .proj-card-front::before, .pc-orange .proj-card-back::before { background: linear-gradient(90deg, #ff6b35, transparent); }
+      .pc-purple .proj-card-front::before, .pc-purple .proj-card-back::before { background: linear-gradient(90deg, #7c3aed, transparent); }
+      .pc-green .proj-card-front::before, .pc-green .proj-card-back::before { background: linear-gradient(90deg, #10b981, transparent); }
+      .pc-pink .proj-card-front::before, .pc-pink .proj-card-back::before { background: linear-gradient(90deg, #ec4899, transparent); }
+      .pc-yellow .proj-card-front::before, .pc-yellow .proj-card-back::before { background: linear-gradient(90deg, #f59e0b, transparent); }
+
+      /* Glow on hover */
+      .pc-cyan:hover .proj-card-front { box-shadow: 0 0 40px rgba(0,212,255,0.15), 0 25px 50px rgba(0,0,0,0.4) !important; }
+      .pc-orange:hover .proj-card-front { box-shadow: 0 0 40px rgba(255,107,53,0.15), 0 25px 50px rgba(0,0,0,0.4) !important; }
+      .pc-purple:hover .proj-card-front { box-shadow: 0 0 40px rgba(124,58,237,0.15), 0 25px 50px rgba(0,0,0,0.4) !important; }
+      .pc-green:hover .proj-card-front { box-shadow: 0 0 40px rgba(16,185,129,0.15), 0 25px 50px rgba(0,0,0,0.4) !important; }
+      .pc-pink:hover .proj-card-front { box-shadow: 0 0 40px rgba(236,72,153,0.15), 0 25px 50px rgba(0,0,0,0.4) !important; }
+      .pc-yellow:hover .proj-card-front { box-shadow: 0 0 40px rgba(245,158,11,0.15), 0 25px 50px rgba(0,0,0,0.4) !important; }
+
+      @media (max-width: 768px) {
+        .proj-grid { grid-template-columns: 1fr; }
+        .proj-card { height: 400px; }
+        .proj-stats { gap: 20px; }
+      }
+    </style>
 </head>
 <body>
-    <!-- Animated Background Particles Canvas -->
     <canvas id="particles-canvas"></canvas>
     
-    <!-- Loading Screen -->
     <div id="loading-screen">
         <div class="loader">
             <div class="orbit"></div>
@@ -38,7 +457,6 @@
         </div>
     </div>
 
-    <!-- Navigation -->
     <nav id="navbar">
         <div class="nav-container">
             <div class="nav-logo">
@@ -156,7 +574,7 @@
                 <div class="about-stats">
                     <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-project-diagram"></i></div>
-                        <div class="stat-number" data-target="3">0</div>
+                        <div class="stat-number" data-target="8">0</div>
                         <div class="stat-label">Major Projects</div>
                     </div>
                     <div class="stat-card">
@@ -187,7 +605,6 @@
                 <h2 class="section-title">Skills & Technologies</h2>
             </div>
             <div class="skills-grid">
-                <!-- Programming & Development -->
                 <div class="skill-category">
                     <div class="category-header">
                         <i class="fas fa-laptop-code"></i>
@@ -199,41 +616,32 @@
                                 <span class="skill-name">Python (NumPy, Pandas, Matplotlib)</span>
                                 <span class="skill-level">Expert</span>
                             </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="95"></div>
-                            </div>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="95"></div></div>
                         </div>
                         <div class="skill-item">
                             <div class="skill-info">
                                 <span class="skill-name">C++</span>
                                 <span class="skill-level">Proficient</span>
                             </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="80"></div>
-                            </div>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="80"></div></div>
                         </div>
                         <div class="skill-item">
                             <div class="skill-info">
                                 <span class="skill-name">SQL & Excel</span>
                                 <span class="skill-level">Intermediate</span>
                             </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="75"></div>
-                            </div>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="75"></div></div>
                         </div>
                         <div class="skill-item">
                             <div class="skill-info">
                                 <span class="skill-name">Machine Learning & AI</span>
                                 <span class="skill-level">Proficient</span>
                             </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="85"></div>
-                            </div>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="85"></div></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Financial & Mathematical -->
                 <div class="skill-category">
                     <div class="category-header">
                         <i class="fas fa-chart-line"></i>
@@ -245,41 +653,32 @@
                                 <span class="skill-name">Financial Modeling & Risk Management</span>
                                 <span class="skill-level">Expert</span>
                             </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="90"></div>
-                            </div>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="90"></div></div>
                         </div>
                         <div class="skill-item">
                             <div class="skill-info">
                                 <span class="skill-name">Stochastic Modeling</span>
                                 <span class="skill-level">Intermediate</span>
                             </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="75"></div>
-                            </div>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="75"></div></div>
                         </div>
                         <div class="skill-item">
                             <div class="skill-info">
                                 <span class="skill-name">Portfolio Optimization</span>
                                 <span class="skill-level">Proficient</span>
                             </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="85"></div>
-                            </div>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="85"></div></div>
                         </div>
                         <div class="skill-item">
                             <div class="skill-info">
                                 <span class="skill-name">Sensitivity Analysis</span>
                                 <span class="skill-level">Proficient</span>
                             </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="80"></div>
-                            </div>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="80"></div></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Aviation & Operations -->
                 <div class="skill-category">
                     <div class="category-header">
                         <i class="fas fa-plane"></i>
@@ -291,41 +690,32 @@
                                 <span class="skill-name">Aviation Safety Management (SMS)</span>
                                 <span class="skill-level">Proficient</span>
                             </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="85"></div>
-                            </div>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="85"></div></div>
                         </div>
                         <div class="skill-item">
                             <div class="skill-info">
                                 <span class="skill-name">Flight Safety Analytics</span>
                                 <span class="skill-level">Intermediate</span>
                             </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="70"></div>
-                            </div>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="70"></div></div>
                         </div>
                         <div class="skill-item">
                             <div class="skill-info">
                                 <span class="skill-name">Aviation Regulatory Compliance</span>
                                 <span class="skill-level">Intermediate</span>
                             </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="70"></div>
-                            </div>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="70"></div></div>
                         </div>
                         <div class="skill-item">
                             <div class="skill-info">
                                 <span class="skill-name">Operations Research (LPP)</span>
                                 <span class="skill-level">Expert</span>
                             </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="95"></div>
-                            </div>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="95"></div></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Cloud AI & Automation -->
                 <div class="skill-category">
                     <div class="category-header">
                         <i class="fas fa-cloud"></i>
@@ -337,42 +727,33 @@
                                 <span class="skill-name">AI-based Decision Support Systems</span>
                                 <span class="skill-level">Proficient</span>
                             </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="85"></div>
-                            </div>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="85"></div></div>
                         </div>
                         <div class="skill-item">
                             <div class="skill-info">
                                 <span class="skill-name">Computer Vision Systems</span>
                                 <span class="skill-level">Intermediate</span>
                             </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="70"></div>
-                            </div>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="70"></div></div>
                         </div>
                         <div class="skill-item">
                             <div class="skill-info">
                                 <span class="skill-name">Predictive Analytics</span>
                                 <span class="skill-level">Proficient</span>
                             </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="80"></div>
-                            </div>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="80"></div></div>
                         </div>
                         <div class="skill-item">
                             <div class="skill-info">
                                 <span class="skill-name">Real-time Control Systems</span>
                                 <span class="skill-level">Intermediate</span>
                             </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="75"></div>
-                            </div>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="75"></div></div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Soft Skills -->
             <div class="soft-skills">
                 <h3 class="soft-skills-title">Soft Skills</h3>
                 <div class="soft-skills-tags">
@@ -387,144 +768,392 @@
         </div>
     </section>
 
-    <!-- Projects Section -->
+    <!-- ============================================================
+         UPDATED PROJECTS SECTION — 8 FLIP CARDS
+    ============================================================ -->
     <section id="projects" class="projects-section">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-label">Portfolio</span>
-                <h2 class="section-title">Featured Projects</h2>
-            </div>
-            <div class="projects-grid">
-                <!-- Project 1: Bale Management System -->
-                <div class="project-card">
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <div class="project-icon">
-                                <i class="fas fa-cubes"></i>
-                            </div>
-                            <h3 class="project-title">Bale Management System</h3>
-                            <p class="project-brief">Industrial automation & optimization solution</p>
-                            <div class="tech-stack">
-                                <span class="tech-badge">Python</span>
-                                <span class="tech-badge">LPP</span>
-                                <span class="tech-badge">Excel Solver</span>
-                            </div>
-                            <div class="flip-hint">
-                                <i class="fas fa-redo"></i>
-                                <span>Hover to learn more</span>
-                            </div>
-                        </div>
-                        <div class="card-back">
-                            <h3 class="project-title">Bale Management System</h3>
-                            <div class="project-details">
-                                <div class="detail-item">
-                                    <strong>Problem:</strong>
-                                    <p>Manual bale handling in textile mills led to inefficiencies, safety risks, and material mismanagement.</p>
-                                </div>
-                                <div class="detail-item">
-                                    <strong>Solution:</strong>
-                                    <p>Designed a real-time controller with safety systems and HMI integration using optimization algorithms.</p>
-                                </div>
-                                <div class="detail-item">
-                                    <strong>Impact:</strong>
-                                    <p>Improved safety, reduced material waste by 15%, increased operational efficiency by 25%.</p>
-                                </div>
-                                <div class="detail-item">
-                                    <strong>Technologies:</strong>
-                                    <p>Python, Linear Programming, Transportation Model, Excel Solver</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+      <div class="proj-grid-bg"></div>
+      <div class="container">
 
-                <!-- Project 2: Production Cost Minimization -->
-                <div class="project-card">
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <div class="project-icon">
-                                <i class="fas fa-chart-bar"></i>
-                            </div>
-                            <h3 class="project-title">Production Cost Minimization</h3>
-                            <p class="project-brief">Operations research optimization</p>
-                            <div class="tech-stack">
-                                <span class="tech-badge">Python</span>
-                                <span class="tech-badge">OR</span>
-                                <span class="tech-badge">AI Logic</span>
-                            </div>
-                            <div class="flip-hint">
-                                <i class="fas fa-redo"></i>
-                                <span>Hover to learn more</span>
-                            </div>
-                        </div>
-                        <div class="card-back">
-                            <h3 class="project-title">Production Cost Minimization</h3>
-                            <div class="project-details">
-                                <div class="detail-item">
-                                    <strong>Problem:</strong>
-                                    <p>High production and transportation costs due to inefficient resource allocation across facilities.</p>
-                                </div>
-                                <div class="detail-item">
-                                    <strong>Solution:</strong>
-                                    <p>Developed optimization models using operations research techniques with AI-based decision logic.</p>
-                                </div>
-                                <div class="detail-item">
-                                    <strong>Impact:</strong>
-                                    <p>Achieved 20-30% cost reduction potential through optimal resource allocation strategies.</p>
-                                </div>
-                                <div class="detail-item">
-                                    <strong>Technologies:</strong>
-                                    <p>Python, Optimization Algorithms, Excel Solver, AI Decision Logic</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project 3: Risk Analysis & Demand Forecasting -->
-                <div class="project-card">
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <div class="project-icon">
-                                <i class="fas fa-analytics"></i>
-                            </div>
-                            <h3 class="project-title">Risk Analysis & Demand Forecasting</h3>
-                            <p class="project-brief">Supply chain predictive analytics</p>
-                            <div class="tech-stack">
-                                <span class="tech-badge">ML</span>
-                                <span class="tech-badge">Stochastic</span>
-                                <span class="tech-badge">Python</span>
-                            </div>
-                            <div class="flip-hint">
-                                <i class="fas fa-redo"></i>
-                                <span>Hover to learn more</span>
-                            </div>
-                        </div>
-                        <div class="card-back">
-                            <h3 class="project-title">Risk Analysis & Forecasting</h3>
-                            <div class="project-details">
-                                <div class="detail-item">
-                                    <strong>Problem:</strong>
-                                    <p>Uncertain demand and fluctuating raw material prices increased financial risk in textile supply chain.</p>
-                                </div>
-                                <div class="detail-item">
-                                    <strong>Solution:</strong>
-                                    <p>Built forecasting and stochastic risk models to support financial decision-making and inventory optimization.</p>
-                                </div>
-                                <div class="detail-item">
-                                    <strong>Impact:</strong>
-                                    <p>Enhanced forecasting accuracy by 35%, reduced financial risk exposure significantly.</p>
-                                </div>
-                                <div class="detail-item">
-                                    <strong>Technologies:</strong>
-                                    <p>Python, Machine Learning Models, Stochastic Calculus, Risk Modeling</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="section-header">
+          <div class="proj-tag">Portfolio</div>
+          <h2 class="section-title">Featured Projects</h2>
+          <p style="color:#8b949e; font-size:1.05rem; max-width:600px; margin:0 auto; line-height:1.7; font-family:'Exo 2',sans-serif;">
+            A showcase of real-world problem solving — from AI-powered fire risk systems to financial modeling and aviation safety.
+            <span style="color:#00d4ff;"> Hover any card to explore details.</span>
+          </p>
         </div>
+
+        <!-- Stats -->
+        <div class="proj-stats">
+          <div class="proj-stat-item">
+            <span class="proj-stat-num">8+</span>
+            <span class="proj-stat-label">Live Projects</span>
+          </div>
+          <div class="proj-stat-item">
+            <span class="proj-stat-num">5</span>
+            <span class="proj-stat-label">Domains</span>
+          </div>
+          <div class="proj-stat-item">
+            <span class="proj-stat-num">3</span>
+            <span class="proj-stat-label">AI Systems</span>
+          </div>
+          <div class="proj-stat-item">
+            <span class="proj-stat-num">100%</span>
+            <span class="proj-stat-label">Real World Impact</span>
+          </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="proj-filter-tabs">
+          <button class="proj-filter-btn active" onclick="filterProjCards('all', this)">All Projects</button>
+          <button class="proj-filter-btn" onclick="filterProjCards('ai', this)">AI & ML</button>
+          <button class="proj-filter-btn" onclick="filterProjCards('aviation', this)">Aviation</button>
+          <button class="proj-filter-btn" onclick="filterProjCards('finance', this)">Finance</button>
+          <button class="proj-filter-btn" onclick="filterProjCards('research', this)">Research</button>
+        </div>
+
+        <!-- GRID -->
+        <div class="proj-grid" id="projGrid">
+
+          <!-- CARD 1: Fire Risk Management -->
+          <div class="proj-card pc-orange" data-category="ai aviation">
+            <div class="proj-card-inner">
+              <div class="proj-card-front">
+                <div class="proj-front-header">
+                  <span class="proj-card-num">01</span>
+                  <div class="proj-icon-wrap">🔥</div>
+                  <span class="proj-cat-badge">AI · Aviation Safety</span>
+                  <h3 class="proj-card-title">Quantitative AI Fire Risk Management</h3>
+                  <p class="proj-card-desc">AI-driven fire risk assessment system for aviation environments using quantitative modeling and predictive analytics for proactive safety management.</p>
+                  <div class="proj-flip-hint">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                    Hover to flip
+                  </div>
+                </div>
+                <div class="proj-front-footer">
+                  <span class="proj-tag-pill">Python</span>
+                  <span class="proj-tag-pill">AI Risk Model</span>
+                  <span class="proj-tag-pill">Aviation SMS</span>
+                </div>
+              </div>
+              <div class="proj-card-back pc-orange">
+                <div class="proj-back-header">
+                  <div class="proj-back-icon">🔥</div>
+                  <div class="proj-back-title">Quantitative AI Fire Risk Management</div>
+                </div>
+                <div class="proj-back-sections">
+                  <div class="proj-back-section">
+                    <div class="proj-back-label" style="color:#ff6b35;">Problem</div>
+                    <div class="proj-back-text">Aviation facilities face unpredictable fire hazards requiring real-time risk quantification and automated response protocols.</div>
+                  </div>
+                  <div class="proj-back-section">
+                    <div class="proj-back-label" style="color:#ff6b35;">Solution</div>
+                    <div class="proj-back-text">Built an AI-based quantitative model that continuously scores fire risk factors and generates automated safety recommendations.</div>
+                  </div>
+                  <div class="proj-impact-stat" style="color:#ff6b35; border-color:rgba(255,107,53,0.2); background:rgba(255,107,53,0.05);">🎯 Proactive fire safety using AI risk scoring</div>
+                </div>
+                <a href="https://www.linkedin.com/posts/sanwal-farooq-3a92b1179_quantitative-ai-fire-risk-management-and-activity-7422326407835447296-8jcC" target="_blank" class="proj-linkedin-btn">🔗 View on LinkedIn</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARD 2: PPL Stock GBM -->
+          <div class="proj-card pc-cyan" data-category="finance ai">
+            <div class="proj-card-inner">
+              <div class="proj-card-front">
+                <div class="proj-front-header">
+                  <span class="proj-card-num">02</span>
+                  <div class="proj-icon-wrap">📈</div>
+                  <span class="proj-cat-badge">Finance · Stochastic</span>
+                  <h3 class="proj-card-title">PPL Stock Randomness — Geometric Brownian Motion</h3>
+                  <p class="proj-card-desc">Analyzed randomness in PPL (Pakistan Petroleum Ltd) stock using Geometric Brownian Motion to test market efficiency and price behavior.</p>
+                  <div class="proj-flip-hint">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                    Hover to flip
+                  </div>
+                </div>
+                <div class="proj-front-footer">
+                  <span class="proj-tag-pill">Python</span>
+                  <span class="proj-tag-pill">GBM Model</span>
+                  <span class="proj-tag-pill">Stochastic Calc</span>
+                </div>
+              </div>
+              <div class="proj-card-back pc-cyan">
+                <div class="proj-back-header">
+                  <div class="proj-back-icon">📈</div>
+                  <div class="proj-back-title">PPL Stock Randomness via GBM</div>
+                </div>
+                <div class="proj-back-sections">
+                  <div class="proj-back-section">
+                    <div class="proj-back-label" style="color:#00d4ff;">Problem</div>
+                    <div class="proj-back-text">Investors need statistical evidence of market randomness in PSX-listed stocks to make informed quantitative trading decisions.</div>
+                  </div>
+                  <div class="proj-back-section">
+                    <div class="proj-back-label" style="color:#00d4ff;">Solution</div>
+                    <div class="proj-back-text">Applied Geometric Brownian Motion with drift and diffusion parameters to model and test randomness in PPL stock price series.</div>
+                  </div>
+                  <div class="proj-impact-stat">📊 Statistical randomness quantified for PSX market</div>
+                </div>
+                <a href="https://www.linkedin.com/posts/sanwal-farooq-3a92b1179_check-randomness-in-ppl-stock-using-geometric-activity-7422328334681948160-vBu_" target="_blank" class="proj-linkedin-btn">🔗 View on LinkedIn</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARD 3: Object Detection OpenCV -->
+          <div class="proj-card pc-purple" data-category="ai">
+            <div class="proj-card-inner">
+              <div class="proj-card-front">
+                <div class="proj-front-header">
+                  <span class="proj-card-num">03</span>
+                  <div class="proj-icon-wrap">👁️</div>
+                  <span class="proj-cat-badge">Computer Vision · AI</span>
+                  <h3 class="proj-card-title">Object Detection in OpenCV — Functional Programming</h3>
+                  <p class="proj-card-desc">Real-time object detection system built using OpenCV with a functional programming paradigm — clean, modular, and efficient.</p>
+                  <div class="proj-flip-hint">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                    Hover to flip
+                  </div>
+                </div>
+                <div class="proj-front-footer">
+                  <span class="proj-tag-pill">OpenCV</span>
+                  <span class="proj-tag-pill">Python</span>
+                  <span class="proj-tag-pill">Functional OOP</span>
+                </div>
+              </div>
+              <div class="proj-card-back pc-purple">
+                <div class="proj-back-header">
+                  <div class="proj-back-icon">👁️</div>
+                  <div class="proj-back-title">Object Detection — OpenCV Functional</div>
+                </div>
+                <div class="proj-back-sections">
+                  <div class="proj-back-section">
+                    <div class="proj-back-label" style="color:#a78bfa;">Problem</div>
+                    <div class="proj-back-text">Industrial and safety systems need lightweight, real-time object detection without heavy deep-learning infrastructure.</div>
+                  </div>
+                  <div class="proj-back-section">
+                    <div class="proj-back-label" style="color:#a78bfa;">Solution</div>
+                    <div class="proj-back-text">Implemented a functional-paradigm OpenCV pipeline for object detection — modular functions, composable pipelines, minimal overhead.</div>
+                  </div>
+                  <div class="proj-impact-stat" style="color:#a78bfa; border-color:rgba(124,58,237,0.2); background:rgba(124,58,237,0.05);">🎯 Real-time detection with lightweight architecture</div>
+                </div>
+                <a href="https://www.linkedin.com/posts/sanwal-farooq-3a92b1179_object-detection-in-opencv-using-funcational-activity-7422331259277828096-a-7g" target="_blank" class="proj-linkedin-btn">🔗 View on LinkedIn</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARD 4: Transportation Problem LPP -->
+          <div class="proj-card pc-green" data-category="finance ai">
+            <div class="proj-card-inner">
+              <div class="proj-card-front">
+                <div class="proj-front-header">
+                  <span class="proj-card-num">04</span>
+                  <div class="proj-icon-wrap">🚛</div>
+                  <span class="proj-cat-badge">Operations Research</span>
+                  <h3 class="proj-card-title">Transportation Problem — LPP Solution</h3>
+                  <p class="proj-card-desc">Solved a real-world transportation and logistics optimization problem using Linear Programming — minimizing cost while satisfying all supply and demand constraints.</p>
+                  <div class="proj-flip-hint">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                    Hover to flip
+                  </div>
+                </div>
+                <div class="proj-front-footer">
+                  <span class="proj-tag-pill">LPP</span>
+                  <span class="proj-tag-pill">Python</span>
+                  <span class="proj-tag-pill">Optimization</span>
+                </div>
+              </div>
+              <div class="proj-card-back pc-green">
+                <div class="proj-back-header">
+                  <div class="proj-back-icon">🚛</div>
+                  <div class="proj-back-title">Transportation Problem — LPP</div>
+                </div>
+                <div class="proj-back-sections">
+                  <div class="proj-back-section">
+                    <div class="proj-back-label" style="color:#34d399;">Problem</div>
+                    <div class="proj-back-text">Businesses lose significant revenue due to inefficient supply chain routing and non-optimal allocation of goods across distribution networks.</div>
+                  </div>
+                  <div class="proj-back-section">
+                    <div class="proj-back-label" style="color:#34d399;">Solution</div>
+                    <div class="proj-back-text">Modeled the transportation challenge as a Linear Programming Problem and solved it using the simplex method and Python optimization libraries.</div>
+                  </div>
+                  <div class="proj-impact-stat" style="color:#34d399; border-color:rgba(16,185,129,0.2); background:rgba(16,185,129,0.05);">💰 Significant cost reduction via optimal routing</div>
+                </div>
+                <a href="https://www.linkedin.com/posts/sanwal-farooq-3a92b1179_transportation-problem-solution-that-facing-activity-7422333640098914304-eini" target="_blank" class="proj-linkedin-btn">🔗 View on LinkedIn</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARD 5: Solo Aerodrome Firefighter -->
+          <div class="proj-card pc-orange" data-category="aviation">
+            <div class="proj-card-inner">
+              <div class="proj-card-front">
+                <div class="proj-front-header">
+                  <span class="proj-card-num">05</span>
+                  <div class="proj-icon-wrap">🚒</div>
+                  <span class="proj-cat-badge">Aviation · Achievement</span>
+                  <h3 class="proj-card-title">Solo Aerodrome Firefighter — Field Achievement</h3>
+                  <p class="proj-card-desc">A proud milestone: successfully performed as a solo aerodrome firefighter in a live airport environment — combining theoretical knowledge with hands-on emergency response.</p>
+                  <div class="proj-flip-hint">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                    Hover to flip
+                  </div>
+                </div>
+                <div class="proj-front-footer">
+                  <span class="proj-tag-pill">ARFF</span>
+                  <span class="proj-tag-pill">Aviation Safety</span>
+                  <span class="proj-tag-pill">Emergency Response</span>
+                </div>
+              </div>
+              <div class="proj-card-back pc-orange">
+                <div class="proj-back-header">
+                  <div class="proj-back-icon">🚒</div>
+                  <div class="proj-back-title">Solo Aerodrome Firefighter</div>
+                </div>
+                <div class="proj-back-sections">
+                  <div class="proj-back-section">
+                    <div class="proj-back-label" style="color:#ff6b35;">Achievement</div>
+                    <div class="proj-back-text">Executed solo aerodrome fire fighting duties in a real airport setting — a rare, high-stakes achievement demonstrating advanced aviation safety competency.</div>
+                  </div>
+                  <div class="proj-back-section">
+                    <div class="proj-back-label" style="color:#ff6b35;">Significance</div>
+                    <div class="proj-back-text">Demonstrated command of ICAO/NFPA emergency standards, aircraft rescue procedures, and hazardous materials handling in live operations.</div>
+                  </div>
+                  <div class="proj-impact-stat" style="color:#ff6b35; border-color:rgba(255,107,53,0.2); background:rgba(255,107,53,0.05);">🏅 Certified solo field aviation fire response</div>
+                </div>
+                <a href="https://www.linkedin.com/posts/sanwal-farooq-3a92b1179_proud-moment-for-being-solo-aerodrome-firefighterin-activity-7422335467473379329-dxCF" target="_blank" class="proj-linkedin-btn">🔗 View on LinkedIn</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARD 6: Insurance Contracts -->
+          <div class="proj-card pc-cyan" data-category="finance research">
+            <div class="proj-card-inner">
+              <div class="proj-card-front">
+                <div class="proj-front-header">
+                  <span class="proj-card-num">06</span>
+                  <div class="proj-icon-wrap">📋</div>
+                  <span class="proj-cat-badge">Finance · Risk</span>
+                  <h3 class="proj-card-title">Traditional Insurance Contracts — Risk Analysis</h3>
+                  <p class="proj-card-desc">In-depth analysis of traditional insurance contract structures, their risk implications, actuarial assumptions, and comparison with modern risk-transfer mechanisms.</p>
+                  <div class="proj-flip-hint">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                    Hover to flip
+                  </div>
+                </div>
+                <div class="proj-front-footer">
+                  <span class="proj-tag-pill">Actuarial</span>
+                  <span class="proj-tag-pill">Risk Modeling</span>
+                  <span class="proj-tag-pill">Financial Math</span>
+                </div>
+              </div>
+              <div class="proj-card-back pc-cyan">
+                <div class="proj-back-header">
+                  <div class="proj-back-icon">📋</div>
+                  <div class="proj-back-title">Traditional Insurance Contracts</div>
+                </div>
+                <div class="proj-back-sections">
+                  <div class="proj-back-section">
+                    <div class="proj-back-label" style="color:#00d4ff;">Focus</div>
+                    <div class="proj-back-text">Examined traditional insurance contract frameworks, moral hazard, adverse selection, and premium pricing using mathematical risk models.</div>
+                  </div>
+                  <div class="proj-back-section">
+                    <div class="proj-back-label" style="color:#00d4ff;">Outcome</div>
+                    <div class="proj-back-text">Identified structural gaps in conventional contracts and proposed quantitative improvements grounded in financial mathematics theory.</div>
+                  </div>
+                  <div class="proj-impact-stat">📐 Quantitative framework for contract risk assessment</div>
+                </div>
+                <a href="https://www.linkedin.com/posts/sanwal-farooq-3a92b1179_traditional-insurance-contracts-traditional-activity-7428347689047670784-tWg6" target="_blank" class="proj-linkedin-btn">🔗 View on LinkedIn</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARD 7: Prevention Safety Lecture -->
+          <div class="proj-card pc-pink" data-category="aviation research">
+            <div class="proj-card-inner">
+              <div class="proj-card-front">
+                <div class="proj-front-header">
+                  <span class="proj-card-num">07</span>
+                  <div class="proj-icon-wrap">🎓</div>
+                  <span class="proj-cat-badge">Aviation · Education</span>
+                  <h3 class="proj-card-title">Prevention is Better Than Cure — Safety Lecture</h3>
+                  <p class="proj-card-desc">Delivered a professional safety lecture on proactive risk prevention in aviation — bridging academic knowledge with operational safety culture.</p>
+                  <div class="proj-flip-hint">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                    Hover to flip
+                  </div>
+                </div>
+                <div class="proj-front-footer">
+                  <span class="proj-tag-pill">Safety Management</span>
+                  <span class="proj-tag-pill">SMS</span>
+                  <span class="proj-tag-pill">Aviation</span>
+                </div>
+              </div>
+              <div class="proj-card-back pc-pink">
+                <div class="proj-back-header">
+                  <div class="proj-back-icon">🎓</div>
+                  <div class="proj-back-title">Prevention is Better Than Cure</div>
+                </div>
+                <div class="proj-back-sections">
+                  <div class="proj-back-section">
+                    <div class="proj-back-label" style="color:#f472b6;">Topic</div>
+                    <div class="proj-back-text">Delivered a structured aviation safety lecture focusing on proactive hazard identification, near-miss reporting culture, and SMS implementation principles.</div>
+                  </div>
+                  <div class="proj-back-section">
+                    <div class="proj-back-label" style="color:#f472b6;">Impact</div>
+                    <div class="proj-back-text">Promoted a "prevention-first" mindset among aviation personnel, emphasizing that reactive safety systems are inherently insufficient.</div>
+                  </div>
+                  <div class="proj-impact-stat" style="color:#f472b6; border-color:rgba(236,72,153,0.2); background:rgba(236,72,153,0.05);">✈️ Advancing proactive safety culture in aviation</div>
+                </div>
+                <a href="https://www.linkedin.com/posts/sanwal-farooq-3a92b1179_prevention-is-better-than-cure-lecture-delivered-activity-7433455210640998400-WeYo" target="_blank" class="proj-linkedin-btn">🔗 View on LinkedIn</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARD 8: Fresh Bread Multani Heritage -->
+          <div class="proj-card pc-yellow" data-category="research">
+            <div class="proj-card-inner">
+              <div class="proj-card-front">
+                <div class="proj-front-header">
+                  <span class="proj-card-num">08</span>
+                  <div class="proj-icon-wrap">🍞</div>
+                  <span class="proj-cat-badge">Research · Heritage</span>
+                  <h3 class="proj-card-title">Fresh Bread for Multani People — Historical Food Research</h3>
+                  <p class="proj-card-desc">An insightful research exploration into the cultural, historical, and economic significance of traditional bread-making in Multan — connecting food heritage with socioeconomic patterns.</p>
+                  <div class="proj-flip-hint">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                    Hover to flip
+                  </div>
+                </div>
+                <div class="proj-front-footer">
+                  <span class="proj-tag-pill">Cultural Research</span>
+                  <span class="proj-tag-pill">History</span>
+                  <span class="proj-tag-pill">Economics</span>
+                </div>
+              </div>
+              <div class="proj-card-back pc-yellow">
+                <div class="proj-back-header">
+                  <div class="proj-back-icon">🍞</div>
+                  <div class="proj-back-title">Fresh Bread & Multani Heritage</div>
+                </div>
+                <div class="proj-back-sections">
+                  <div class="proj-back-section">
+                    <div class="proj-back-label" style="color:#fbbf24;">Research</div>
+                    <div class="proj-back-text">Investigated the deep-rooted bread-making traditions of Multan, exploring their historical origins and the socioeconomic role of local tandoor culture.</div>
+                  </div>
+                  <div class="proj-back-section">
+                    <div class="proj-back-label" style="color:#fbbf24;">Significance</div>
+                    <div class="proj-back-text">Highlighted the intersection of food history, local economy, and cultural identity — documenting knowledge that risks being lost to modernization.</div>
+                  </div>
+                  <div class="proj-impact-stat" style="color:#fbbf24; border-color:rgba(245,158,11,0.2); background:rgba(245,158,11,0.05);">🏛️ Preserving Multani cultural & food heritage</div>
+                </div>
+                <a href="https://www.linkedin.com/posts/sanwal-farooq-3a92b1179_fresh-bread-for-multani-people-with-history-activity-7457418157998096384-9UJM" target="_blank" class="proj-linkedin-btn">🔗 View on LinkedIn</a>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /proj-grid -->
+      </div><!-- /container -->
     </section>
 
     <!-- Achievements Section -->
@@ -536,44 +1165,32 @@
             </div>
             <div class="achievements-grid">
                 <div class="achievement-card">
-                    <div class="achievement-icon">
-                        <i class="fas fa-trophy"></i>
-                    </div>
+                    <div class="achievement-icon"><i class="fas fa-trophy"></i></div>
                     <h3 class="achievement-title">Stochastic Modeling in Stock Markets</h3>
                     <p class="achievement-description">Applied advanced stochastic calculus and mathematical modeling techniques to analyze stock market behaviors and price movements.</p>
                 </div>
                 <div class="achievement-card">
-                    <div class="achievement-icon">
-                        <i class="fas fa-award"></i>
-                    </div>
+                    <div class="achievement-icon"><i class="fas fa-award"></i></div>
                     <h3 class="achievement-title">Cost Optimization Using LPP</h3>
                     <p class="achievement-description">Successfully implemented Linear Programming techniques to solve complex industrial optimization problems, achieving significant cost reductions.</p>
                 </div>
                 <div class="achievement-card">
-                    <div class="achievement-icon">
-                        <i class="fas fa-medal"></i>
-                    </div>
+                    <div class="achievement-icon"><i class="fas fa-medal"></i></div>
                     <h3 class="achievement-title">Real-World Industrial Problem Solver</h3>
                     <p class="achievement-description">Developed practical solutions for textile and manufacturing industries using LPP and operations research methodologies.</p>
                 </div>
                 <div class="achievement-card">
-                    <div class="achievement-icon">
-                        <i class="fas fa-star"></i>
-                    </div>
+                    <div class="achievement-icon"><i class="fas fa-star"></i></div>
                     <h3 class="achievement-title">Teaching Assistant - Math Lab</h3>
                     <p class="achievement-description">Served as Teaching Assistant in Mathematics Laboratory, mentoring students and facilitating practical mathematical applications.</p>
                 </div>
                 <div class="achievement-card">
-                    <div class="achievement-icon">
-                        <i class="fas fa-lightbulb"></i>
-                    </div>
+                    <div class="achievement-icon"><i class="fas fa-lightbulb"></i></div>
                     <h3 class="achievement-title">Integrated AI & ML Systems</h3>
                     <p class="achievement-description">Applied Python, OOP, Machine Learning, and Excel Solver for creating comprehensive optimization and forecasting systems.</p>
                 </div>
                 <div class="achievement-card">
-                    <div class="achievement-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
+                    <div class="achievement-icon"><i class="fas fa-shield-alt"></i></div>
                     <h3 class="achievement-title">AI-based Safety Controller</h3>
                     <p class="achievement-description">Developed AI-powered safety controller for industrial applications, integrating real-time monitoring and automated decision-making.</p>
                 </div>
@@ -624,39 +1241,29 @@
                         <div class="contact-card-inner">
                             <div class="contact-info">
                                 <div class="info-item">
-                                    <div class="info-icon">
-                                        <i class="fas fa-envelope"></i>
-                                    </div>
+                                    <div class="info-icon"><i class="fas fa-envelope"></i></div>
                                     <div class="info-content">
                                         <h4>Email</h4>
                                         <a href="mailto:sanwalfarooqqaisrani@gmail.com">sanwalfarooqqaisrani@gmail.com</a>
-                                        <button class="copy-btn" data-copy="sanwalfarooqqaisrani@gmail.com">
-                                            <i class="fas fa-copy"></i>
-                                        </button>
+                                        <button class="copy-btn" data-copy="sanwalfarooqqaisrani@gmail.com"><i class="fas fa-copy"></i></button>
                                     </div>
                                 </div>
                                 <div class="info-item">
-                                    <div class="info-icon">
-                                        <i class="fab fa-linkedin"></i>
-                                    </div>
+                                    <div class="info-icon"><i class="fab fa-linkedin"></i></div>
                                     <div class="info-content">
                                         <h4>LinkedIn</h4>
                                         <a href="https://www.linkedin.com/in/sanwal-farooq-3a92b1179" target="_blank" rel="noopener">linkedin.com/in/sanwal-farooq</a>
                                     </div>
                                 </div>
                                 <div class="info-item">
-                                    <div class="info-icon">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                    </div>
+                                    <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
                                     <div class="info-content">
                                         <h4>Location</h4>
                                         <p>Pakistan</p>
                                     </div>
                                 </div>
                                 <div class="info-item">
-                                    <div class="info-icon">
-                                        <i class="fas fa-graduation-cap"></i>
-                                    </div>
+                                    <div class="info-icon"><i class="fas fa-graduation-cap"></i></div>
                                     <div class="info-content">
                                         <h4>University</h4>
                                         <p>Bahauddin Zakariya University</p>
@@ -701,5 +1308,47 @@
     </footer>
 
     <script src="script.js"></script>
+
+    <!-- ===== NEW PROJECTS SECTION JAVASCRIPT ===== -->
+    <script>
+      // Scroll-in animation for new proj-cards
+      const projCards = document.querySelectorAll('.proj-card');
+      const projObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const idx = Array.from(projCards).indexOf(entry.target);
+            setTimeout(() => entry.target.classList.add('visible'), 80 * idx);
+            projObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      projCards.forEach(card => projObserver.observe(card));
+
+      // Filter function
+      function filterProjCards(category, btn) {
+        document.querySelectorAll('.proj-filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        projCards.forEach(card => {
+          const cats = card.dataset.category || '';
+          if (category === 'all' || cats.includes(category)) {
+            card.style.display = '';
+            setTimeout(() => card.classList.add('visible'), 50);
+          } else {
+            card.classList.remove('visible');
+            setTimeout(() => card.style.display = 'none', 400);
+          }
+        });
+      }
+
+      // Touch/mobile flip support
+      projCards.forEach(card => {
+        card.addEventListener('touchstart', () => {
+          const inner = card.querySelector('.proj-card-inner');
+          inner.style.transform = inner.style.transform === 'rotateY(180deg)' ? '' : 'rotateY(180deg)';
+        });
+      });
+    </script>
 </body>
 </html>
